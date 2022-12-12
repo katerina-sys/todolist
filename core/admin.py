@@ -9,9 +9,9 @@ from core.models import User
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('display', 'email', 'first_name', 'last_name')
-    search_fields = ('display', 'email', 'first_name', 'last_name')
-    readonly_fields = ('lost_login', 'date_joined')
+    list_display = ('username', 'email', 'first_name', 'last_name')
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+    readonly_fields = ('last_login', 'date_joined')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
