@@ -12,7 +12,6 @@ services:
     image:  katerinasys/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     restart: always
     environment:
-      DEBUG: ${DEBUG}
       POSTGRES_HOST: ${POSGTRES_HOST}
       POSTGRES_USER: ${POSGTRES_USER}
       POSTGRES_PASSWORD: ${POSGTRES_PASSWORD}
