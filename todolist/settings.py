@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if (env_path := BASE_DIR.joinpath('.env')) and env_path.is_file():
     env.read_envfile(env_path)
 
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = "django-insecure-3u6&l#i_q7f1+amn6=g82e)vx1k8#zz2mapm2#w%&ye16r01u!"
