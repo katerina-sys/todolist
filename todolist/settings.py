@@ -26,7 +26,7 @@ if (env_path := BASE_DIR.joinpath('.env')) and env_path.is_file():
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = "django-insecure-3u6&l#i_q7f1+amn6=g82e)vx1k8#zz2mapm2#w%&ye16r01u!"
+# SECRET_KEY = "django-insecure-3u6&l#i_q7f1+amn6=g82e)vx1k8#zz2mapm2#w%&ye16r01u!"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "core",
+    "rest_framework",
+    "corsheaders",
+    "social_django",
 ]
 
 MIDDLEWARE = [
@@ -129,4 +132,19 @@ STATIC_URL = "static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
+# AUTH SETTINGS
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('SOCIAL_AUTH_VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/profile'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
