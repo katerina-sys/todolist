@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   frontend:
-    image:  sermalenk/skypro-front:lesson-35
+    image:  sermalenk/skypro-front:lesson-37
     restart: always
     depends_on:
       - api
@@ -17,6 +17,8 @@ services:
       POSTGRES_PASSWORD: ${POSGTRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       SECRET_KEY: ${SECRET_KEY}
+      SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
+      SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
     depends_on:
       postgres:
         condition: service_healthy
@@ -32,6 +34,8 @@ services:
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_DB: ${POSTGRES_DB}
         SECRET_KEY: ${SECRET_KEY}
+        SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
+        SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
     depends_on:
       postgres:
         condition: service_healthy
