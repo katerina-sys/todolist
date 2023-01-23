@@ -11,29 +11,44 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from envparse import env
+# from envparse import env
+import environ
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-if (env_path := BASE_DIR.joinpath('.env')) and env_path.is_file():
-    env.read_envfile(env_path)
+# if (env_path := BASE_DIR.joinpath('.env')) and env_path.is_file():
+# env.read_envfile(env_path)
 
-SECRET_KEY = env('SECRET_KEY')
+# SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = "django-insecure-3u6&l#i_q7f1+amn6=g82e)vx1k8#zz2mapm2#w%&ye16r01u!"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', default=False)
+# DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = env.list('', default=["*"])
+# ALLOWED_HOSTS = env.list('', default=["*"])
 
 # Application definition
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+environ.Env.read_env(Path(BASE_DIR, '.env'))
+
+SECRET_KEY = env('SECRET_KEY')
+
+DEBUG = env.bool('DEBUG', default=False)
+
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -147,5 +162,5 @@ SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('SOCIAL_AUTH_VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/profile'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/profile'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
