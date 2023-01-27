@@ -155,6 +155,12 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+}
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
