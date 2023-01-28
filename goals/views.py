@@ -11,8 +11,8 @@ from goals.filters import GoalDateFilter
 from goals.models import GoalCategory, Goal, GoalComment, Board
 from goals.permissions import BoardPermissions, GoalCommentPermissions, GoalPermissions, GoalCategoryPermissions
 from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, \
-    GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardSerializer, BoardListSerializer, \
-    BoardCreateSerializer
+    GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardCreateSerializer, BoardListSerializer, \
+    BoardSerializer
 
 
 class GoalCategoryCreateView(CreateAPIView):
@@ -99,7 +99,7 @@ class GoalView(RetrieveUpdateDestroyAPIView):
 
 class GoalCommentCreateView(CreateAPIView):
     model = GoalComment
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, GoalCommentPermissions]
     serializer_class = GoalCommentCreateSerializer
 
 
