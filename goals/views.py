@@ -9,10 +9,10 @@ from rest_framework.pagination import LimitOffsetPagination
 
 from goals.filters import GoalDateFilter
 from goals.models import GoalCategory, Goal, GoalComment, Board
-from goals.permissions import BoardPermissions, GoalCommentPermissions, GoalPermissions, GoalCategoryPermissions
+from goals.permissions import BoardPermissions, GoalCategoryPermissions, GoalPermissions, GoalCommentPermissions
 from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, \
-    GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardCreateSerializer, BoardListSerializer, \
-    BoardSerializer
+    GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardCreateSerializer, BoardSerializer, \
+    BoardListSerializer
 
 
 class GoalCategoryCreateView(CreateAPIView):
@@ -29,6 +29,7 @@ class GoalCategoryListView(ListAPIView):
     filter_backends = [
         filters.OrderingFilter,
         filters.SearchFilter,
+        DjangoFilterBackend,
     ]
     ordering_fields = ['title', 'created']
     ordering = ['title']
@@ -47,13 +48,13 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, GoalCategoryPermissions]
 
     def get_queryset(self):
-        return GoalCategory.objects.filter(board__participants__user=self.request.user, is_deleted=False)
+        return GoalCategory.objects.filter(
+            board__participants__user=self.request.user, is_deleted=False
+        )
 
     def perform_destroy(self, instance):
-        with transaction.atomic():
-            instance.is_deleted = True
-            instance.save(update_fields=('is_deleted',))
-            instance.goals.update(status=Goal.Status.archived)
+        instance.is_deleted = True
+        instance.save()
         return instance
 
 
@@ -73,7 +74,7 @@ class GoalListView(ListAPIView):
         filters.SearchFilter,
         DjangoFilterBackend,
     ]
-    filter_set_class = GoalDateFilter
+    filterset_class = GoalDateFilter
     ordering_fields = ['due_date', 'priority']
     ordering = ['priority', 'due_date']
     search_fields = ['title', 'description']
@@ -142,7 +143,7 @@ class BoardView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         # Обратите внимание на фильтрацию – она идет через participants
-        return Board.objects.filter(is_deleted=False)
+        return Board.objects.filter(participants__user=self.request.user, is_deleted=False)
 
     def perform_destroy(self, instance: Board):
         # При удалении доски помечаем ее как is_deleted,
