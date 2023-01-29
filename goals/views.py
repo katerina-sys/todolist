@@ -33,7 +33,7 @@ class GoalCategoryListView(ListAPIView):
     ordering_fields = ['title', 'created']
     ordering = ['title']
     search_fields = ['title']
-    filter_set_fields = ['board']
+    filterset_fields = ['board']
 
     def get_queryset(self):
         return GoalCategory.objects.filter(
@@ -113,7 +113,7 @@ class GoalCommentListView(ListAPIView):
         filters.SearchFilter,
         DjangoFilterBackend
     ]
-    filter_set_fields = ['goal']
+    filterset_fields = ['goal']
     ordering = ['-created']
 
     def get_queryset(self):
