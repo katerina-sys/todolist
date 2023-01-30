@@ -1,5 +1,7 @@
+
 from django.db import transaction
 from rest_framework import serializers
+from rest_framework.exceptions import PermissionDenied
 
 from core.models import User
 from core.serializers import UserSerializer
@@ -11,16 +13,19 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GoalCategory
-        read_only_fields = ('id', 'created', 'updated', 'user')
         fields = '__all__'
+        read_only_fields = ('id', 'created', 'updated', 'user', 'is_deleted')
 
-    def validate_category(self, value):
+    def validate_board(self, value: Board) -> Board:
         if value.is_deleted:
-            raise serializers.ValidationError('not allowed in deleted category')
+            raise serializers.ValidationError('Board is deleted')
 
-        if value.user != self.context['request'].user:
-            raise serializers.ValidationError('not owner of category')
-
+        if not BoardParticipant.objects.filter(
+                board=value,
+                role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
+                user_id=self.context['request'].user.id
+        ):
+            raise PermissionDenied
         return value
 
 
