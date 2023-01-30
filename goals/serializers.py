@@ -50,15 +50,20 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Goal
-        read_only_fields = ('id', 'created', 'updated', 'user')
+        read_only_fields = ('id', 'created', 'updated', 'user', 'is_deleted')
         fields = '__all__'
 
-    def validate_category(self, value):
+    def validate_category(self, value: GoalCategory) -> GoalCategory:
         if value.is_deleted:
             raise serializers.ValidationError('not allowed in deleted category')
 
-        # if value.user != self.context['request'].user:
-        #     raise serializers.ValidationError('not owner of category')
+        if not BoardParticipant.objects.filter(
+                board=value,
+                role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
+                user_id=self.context['request'].user.id
+        ):
+            raise PermissionDenied
+        return value
 
         return value
 
