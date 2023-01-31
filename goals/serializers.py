@@ -58,7 +58,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('not allowed in deleted category')
 
         if not BoardParticipant.objects.filter(
-                category=value,
+                board_id=value.board_id,
                 role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
                 user_id=self.context['request'].user.id
         ):
