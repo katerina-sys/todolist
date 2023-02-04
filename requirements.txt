@@ -52,5 +52,6 @@ django-cors-headers==3.13.0
 social-auth-app-django==5.0.0
 django-filter==22.1
 
+environ==1.0
 marshmallow~=3.19.0
 aiogram~=2.24
