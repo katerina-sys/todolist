@@ -20,6 +20,7 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
+      BOT_TOKEN: ${BOT_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy
@@ -38,6 +39,7 @@ services:
         SECRET_KEY: ${SECRET_KEY}
         SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
         SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
+        BOT_TOKEN: ${BOT_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy
