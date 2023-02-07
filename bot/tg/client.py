@@ -1,6 +1,6 @@
 import requests
 
-
+import bot
 from bot.tg.dc import GetUpdatesResponse, SendMessageResponse
 
 
