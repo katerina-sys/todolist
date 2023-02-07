@@ -36,6 +36,7 @@ class Message:
     message_id: int
     msg_from: MessageFrom = field(metadata=({'data_key': 'from'}))
     chat: MessageChat
+    status: str
     date: int
     text: str | None
 
