@@ -1,31 +1,24 @@
 from dataclasses import field
-from typing import List
-from marshmallow import EXCLUDE
+from typing import ClassVar, Type, List, Optional
+
 import marshmallow_dataclass
 from marshmallow_dataclass import dataclass
+from marshmallow import Schema, EXCLUDE
 
 
 @dataclass
 class MessageFrom:
     id: int
-    is_bot: bool
-    first_name: str | None
-    last_name: str | None
-    username: str
-    language_code: str | None
+    username: Optional[str]
 
     class Meta:
         unknown = EXCLUDE
 
 
 @dataclass
-class MessageChat:
+class Chat:
     id: int
-    first_name: str | None
-    username: str | None
-    last_name: str | None
-    type: str
-    title: str | None
+    username: Optional[str] = None
 
     class Meta:
         unknown = EXCLUDE
@@ -34,11 +27,9 @@ class MessageChat:
 @dataclass
 class Message:
     message_id: int
-    msg_from: MessageFrom = field(metadata=({'data_key': 'from'}))
-    chat: MessageChat
-    status: str
-    date: int
-    text: str | None
+    msg_from: MessageFrom = field(metadata={"data_key": "from"})
+    chat: Chat
+    text: Optional[str] = None
 
     class Meta:
         unknown = EXCLUDE
@@ -58,6 +49,8 @@ class GetUpdatesResponse:
     ok: bool
     result: List[UpdateObj]
 
+    Schema: ClassVar[Type[Schema]] = Schema
+
     class Meta:
         unknown = EXCLUDE
 
@@ -66,6 +59,8 @@ class GetUpdatesResponse:
 class SendMessageResponse:
     ok: bool
     result: Message
+
+    Schema: ClassVar[Type[Schema]] = Schema
 
     class Meta:
         unknown = EXCLUDE
