@@ -12,6 +12,7 @@ class MessageFrom:
     first_name: str | None
     last_name: str | None
     username: str
+    language_code: str | None
 
     class Meta:
         unknown = EXCLUDE
