@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 
 services:
   frontend:
@@ -27,7 +27,7 @@ services:
       migrations:
         condition: service_completed_successfully
     ports:
-      - "8000:8000"
+      - "80:80"
   bot:
     image: katerinasys/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     restart: always
