@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 
 services:
   frontend:
@@ -21,6 +21,7 @@ services:
         condition: service_completed_successfully
     ports:
       - "8000:8000"
+
   migrations:
     build:
       context: .
@@ -28,7 +29,7 @@ services:
       postgres:
         condition: service_healthy
     env_file:
-      - .env:/todolist/.env
+      - .env
     command: python manage.py migrate
 
   bot:
@@ -41,7 +42,7 @@ services:
     command: >
       sh -c "python3 manage.py runbot"
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
@@ -57,9 +58,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./pg_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 5s
       timeout: 5s
       retries: 5
