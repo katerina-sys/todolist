@@ -6,7 +6,7 @@ from bot.models import TgUser
 from bot.tg.serializers import TgUserSerializer
 
 
-class VerificationView(GenericAPIView):
+class BotVerifyView(GenericAPIView):
     model = TgUser
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = TgUserSerializer
