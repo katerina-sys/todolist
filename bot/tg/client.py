@@ -1,6 +1,6 @@
 import requests
 from marshmallow import ValidationError
-import bot
+
 from bot.tg.dc import GetUpdatesResponse, SendMessageResponse
 
 
