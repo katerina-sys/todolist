@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-
+import bot
 from bot.models import TgUser
 from bot.tg.client import TgClient
 from bot.tg.serializers import TgUserSerializer
