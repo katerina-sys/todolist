@@ -2,7 +2,7 @@ import string
 from random import choice
 
 from asgiref.sync import sync_to_async
-
+import bot
 from bot.models import TgUser
 from goals.models import Goal, GoalCategory
 
