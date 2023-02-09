@@ -1,54 +1,68 @@
-from aiogram import types, Dispatcher
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
-
-from bot.utils import list_categories, list_title_categories, create_goal
+from dataclasses import field
+from typing import ClassVar, Type, List, Optional
 
 
-class TgStates(StatesGroup):
-    choice_cat = State()
-    title_goal = State()
+from marshmallow_dataclass import dataclass
+from marshmallow import Schema, EXCLUDE
 
 
-async def input_cat_for_create_goal(message: types.Message):
-    """Выбор категории для создания цели"""
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    categories = await list_categories(message)
-    cat_title = await list_title_categories(message)
-    for cat in cat_title:
-        keyboard.add(cat)
-    await message.answer(f'Выберите категорию для создания цели\n {categories}', reply_markup=keyboard)
-    await TgStates.choice_cat.set()
+@dataclass
+class MessageFrom:
+    id: int
+    username: Optional[str]
+
+    class Meta:
+        unknown = EXCLUDE
 
 
-async def input_cat(message: types.Message, state: FSMContext):
-    """В случае ошибки повторный ввод категории или сохранение выбранной"""
-    cat_title = await list_title_categories(message)
-    if message.text.lower() not in cat_title:
-        await message.answer('Выберите категорию, использую клавиатуру ниже')
-        return
-    await state.update_data(cat_title=message.text.lower())
-    await TgStates.title_goal.set()
-    await message.answer(f'Теперь введи название цели', reply_markup=types.ReplyKeyboardRemove())
+@dataclass
+class Chat:
+    id: int
+    username: Optional[str] = None
+
+    class Meta:
+        unknown = EXCLUDE
 
 
-async def input_new_goal(message: types.Message, state: FSMContext):
-    """Создание новой цели"""
-    data = await state.get_data()
-    category = data['cat_title']
-    await create_goal(message.text, message, category)
-    await message.answer(f'Вы создали цель {message.text}')
-    await state.finish()
+@dataclass
+class Message:
+    message_id: int
+    msg_from: MessageFrom = field(metadata={"data_key": "from"})
+    chat: Chat
+    text: Optional[str] = None
+
+    class Meta:
+        unknown = EXCLUDE
 
 
-async def command_cancel(message: types.Message, state: FSMContext):
-    await state.finish()
-    await message.answer('Вы отменили действие', reply_markup=types.ReplyKeyboardRemove())
+@dataclass
+class UpdateObj:
+    update_id: int
+    message: Message
+
+    class Meta:
+        unknown = EXCLUDE
 
 
-def register_handlers_bot(dp: Dispatcher):
-    dp.register_message_handler(command_cancel, commands=['cancel'], state='*')
-    dp.register_message_handler(input_cat_for_create_goal, commands=['create'], state=['*'])
-    dp.register_message_handler(input_cat, state=TgStates.choice_cat)
-    dp.register_message_handler(input_new_goal, state=TgStates.title_goal)
+@dataclass
+class GetUpdatesResponse:
+    ok: bool
+    result: List[UpdateObj]
+
+    Schema: ClassVar[Type[Schema]] = Schema
+
+    class Meta:
+        unknown = EXCLUDE
+
+
+@dataclass
+class SendMessageResponse:
+    ok: bool
+    result: Message
+
+    Schema: ClassVar[Type[Schema]] = Schema
+
+    class Meta:
+        unknown = EXCLUDE
+
 
