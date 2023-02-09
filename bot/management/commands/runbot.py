@@ -3,7 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.core.management import BaseCommand
 
-import bot
+
 from bot.models import TgUser
 from bot.tg.client import TgClient
 from bot.tg.dc import Message
