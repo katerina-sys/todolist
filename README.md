@@ -23,4 +23,4 @@ Todolist - приложение для планирования целей.
 - Python 3.9
 - Django 4.1.3
 - Postgres 15.1
-- aiogram 2.25
+
