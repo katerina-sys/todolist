@@ -7,7 +7,7 @@ services:
     depends_on:
       - api
     ports:
-      - "80:80"
+      - "8080:80"
   api:
     image:  katerinasys/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     restart: always
@@ -26,6 +26,7 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+
   bot:
     image: katerinasys/todolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     restart: always
