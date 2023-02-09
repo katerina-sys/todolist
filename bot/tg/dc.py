@@ -58,6 +58,7 @@ class UpdateObj:
 
 @dataclass
 class GetUpdatesResponse:
+
     def __init__(self):
         pass
 
