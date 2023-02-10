@@ -36,7 +36,7 @@ services:
     #env_file:
       #- .env
     volumes:
-      - ./.env:/todolist/.env
+      - ./.env:/app/.env
     command: >
       sh -c "python3 manage.py runbot"
     depends_on:
