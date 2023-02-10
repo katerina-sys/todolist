@@ -31,10 +31,12 @@ services:
   bot:
     build:
       context: .
-      dockerfile: Dockerfile
-    restart: always
-    env_file:
-      - .env
+      #dockerfile: Dockerfile
+    #restart: always
+    #env_file:
+      #- .env
+    volumes:
+      - ./.env:/todolist/.env
     command: >
       sh -c "python3 manage.py runbot"
     depends_on:
