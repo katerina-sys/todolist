@@ -2,7 +2,7 @@ import requests
 from marshmallow import ValidationError
 
 from bot.tg.dc import GetUpdatesResponse, SendMessageResponse
-
+import bot
 
 class TgClient:
     def __init__(self, token):

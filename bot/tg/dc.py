@@ -1,6 +1,6 @@
 from dataclasses import field
 from typing import ClassVar, Type, List, Optional
-
+import bot
 from marshmallow_dataclass import dataclass
 from marshmallow import Schema, EXCLUDE
 
