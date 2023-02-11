@@ -46,7 +46,7 @@ services:
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
       BOT_TOKEN: ${BOT_TOKEN}
     volumes:
-      - ./.env:/todolist/.env
+      - ./.env:/app/.env
     command: python manage.py runbot
 
   migrations:
