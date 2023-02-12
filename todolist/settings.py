@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     "core",
     "goals",
     "bot",
-    "drf_spectacular"
 ]
 
 MIDDLEWARE = [
@@ -161,15 +160,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Todolist API',
-    'DESCRIPTION': 'API for todolist application',
-    'VERSION': '1.0.0',
-}
-
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
