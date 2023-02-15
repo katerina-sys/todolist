@@ -1,5 +1,5 @@
 import requests
-
+# client
 from bot.tg.dc import GetUpdatesResponse, SendMessageResponse
 
 
