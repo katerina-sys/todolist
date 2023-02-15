@@ -1,14 +1,17 @@
 from dataclasses import field
 from typing import ClassVar, Type, List, Optional
-import bot
+
 from marshmallow_dataclass import dataclass
 from marshmallow import Schema, EXCLUDE
 
 
 @dataclass
 class MessageFrom:
+    """Telegram API: https://core.telegram.org/bots/api#user"""
     id: int
-    username: Optional[str]
+    first_name: Optional[str] = field(default=None)
+    last_name: Optional[str] = field(default=None)
+    username: Optional[str] = field(default=None)
 
     class Meta:
         unknown = EXCLUDE
@@ -17,7 +20,11 @@ class MessageFrom:
 @dataclass
 class Chat:
     id: int
+    type: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     username: Optional[str] = None
+    title: Optional[str] = None
 
     class Meta:
         unknown = EXCLUDE
@@ -25,10 +32,12 @@ class Chat:
 
 @dataclass
 class Message:
+    """Telegram API: https://core.telegram.org/bots/api#message"""
     message_id: int
-    msg_from: MessageFrom = field(metadata={"data_key": "from"})
     chat: Chat
-    text: Optional[str] = None
+    # override usage of keyword "from" - add underscore and metadata to map to data key
+    from_: Optional[MessageFrom] = field(metadata=dict(data_key='from'), default=None)
+    text: Optional[str] = field(default=None)
 
     class Meta:
         unknown = EXCLUDE
@@ -36,8 +45,9 @@ class Message:
 
 @dataclass
 class UpdateObj:
+    """Telegram API: https://core.telegram.org/bots/api#getting-updates"""
     update_id: int
-    message: Message
+    message: Optional[Message] = field(default=None)
 
     class Meta:
         unknown = EXCLUDE
@@ -45,6 +55,7 @@ class UpdateObj:
 
 @dataclass
 class GetUpdatesResponse:
+    """https://core.telegram.org/bots/api#getupdates"""
     ok: bool
     result: List[UpdateObj]
 
@@ -56,6 +67,7 @@ class GetUpdatesResponse:
 
 @dataclass
 class SendMessageResponse:
+    """https://core.telegram.org/bots/api#sendmessage"""
     ok: bool
     result: Message
 
